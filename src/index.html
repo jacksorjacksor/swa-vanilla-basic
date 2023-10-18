@@ -1,17 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
+<h1>Static Web Apps Database Connections</h1>
+<blockquote>
+    Open the console in the browser developer tools to see the API responses.
+</blockquote>
+<div>
+    <button id="list" onclick="list()">List</button>
+    <button id="get" onclick="get()">Get</button>
+    <button id="update" onclick="update()">Update</button>
+    <button id="create" onclick="create()">Create</button>
+    <button id="delete" onclick="del()">Delete</button>
+</div>
+<script>
+  async function list() {
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
-  <title>Vanilla JavaScript App</title>
-</head>
-
-<body>
-  <main>
-    <h1>Vanilla JavaScript App</h1>
-  </main>
-</body>
-
-</html>
+    const query = `
+        {
+          people {
+            items {
+              id
+              firstname
+            }
+          }
+        }`;
+        
+    const endpoint = "/data-api/graphql";
+    const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: query })
+    });
+    const result = await response.json();
+    console.table(result.data.people.items);
+  }
+</script>
